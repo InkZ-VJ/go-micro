@@ -8,7 +8,7 @@ import (
 )
 
 const (
-    PORT = ":3000"
+	PORT = ":3000"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 		render(w, "test.page.tmpl")
 	})
 
-	fmt.Printf("Starting front end service on port %s",PORT)
+	fmt.Printf("Starting front end service on port %s", PORT)
 	err := http.ListenAndServe(PORT, nil)
 	if err != nil {
 		log.Panic(err)
