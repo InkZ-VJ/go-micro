@@ -14,7 +14,7 @@ message LogRequest{
 }
 
 message LogResponse {
-    string serult = 1;
+    string result = 1;
 }
 
 service LogService {
