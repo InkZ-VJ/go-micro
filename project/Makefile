@@ -64,10 +64,20 @@ build_front:
 ## start: starts the front end
 start: build_front
 	@echo "Starting front end"
-	cd ../front-end && ./${FRONT_END_BINARY} &
+	cd ../front-end && ./${FRONT_END_BINARY}
 
 ## stop: stop the front end
 stop:
 	@echo "Stopping front end..."
 	@-pkill -SIGTERM -f "./${FRONT_END_BINARY}"
 	@echo "Stopped front end!"
+
+
+apply-kube:
+	kubectl apply -f k8s
+
+postgres-kube:
+	docker-compose -f postgres.yml up -d
+
+broker-kube:
+	kubectl expose deployment broker-service --type=LoadBalancer --port=8080 --target-port=8080 && minikube tunnel
