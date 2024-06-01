@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"html/template"
 	"log"
@@ -8,7 +9,7 @@ import (
 )
 
 const (
-	PORT = ":3000"
+	PORT = ":8081"
 )
 
 func main() {
@@ -23,12 +24,15 @@ func main() {
 	}
 }
 
+//go:embed templates
+var templateFS embed.FS
+
 func render(w http.ResponseWriter, t string) {
 
 	partials := []string{
-		"./cmd/web/templates/base.layout.tmpl",
-		"./cmd/web/templates/header.partial.tmpl",
-		"./cmd/web/templates/footer.partial.tmpl",
+		"templates/base.layout.tmpl",
+		"templates/header.partial.tmpl",
+		"templates/footer.partial.tmpl",
 	}
 
 	var templateSlice []string
@@ -38,7 +42,7 @@ func render(w http.ResponseWriter, t string) {
 		templateSlice = append(templateSlice, x)
 	}
 
-	tmpl, err := template.ParseFiles(templateSlice...)
+	tmpl, err := template.ParseFS(templateFS, templateSlice...)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
